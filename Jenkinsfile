@@ -23,8 +23,8 @@ pipeline {
 			groupId: 'org.cg.springboot', 
 			nexusUrl: '54.83.61.112', 
 			nexusVersion: 'nexus3',
-			protocol: 'https', 
-			repository: 'http://54.83.61.112:8081/repository/SpringBootApi/', 
+			protocol: 'http', 
+			repository: 'SpringBootApi', 
 			version: '1.0-SNAPSHOT'
       }
       
