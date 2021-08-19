@@ -19,7 +19,7 @@ pipeline {
 			nexusArtifactUploader artifacts: 
 			[[artifactId: 'springbootapi',
 			classifier: '', 
-			file: 'target/springbootapi-${mavenPom.version}.jar', 
+			file: "target/springbootapi-${mavenPom.version}.jar", 
 			type: 'jar']], 
 			credentialsId: 'NEXUS', 
 			groupId: 'org.cg.springboot', 
