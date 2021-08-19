@@ -21,7 +21,7 @@ pipeline {
 			type: 'jar']], 
 			credentialsId: 'NEXUS', 
 			groupId: 'org.cg.springboot', 
-			nexusUrl: '54.83.61.112', 
+			nexusUrl: '54.83.61.112:8081', 
 			nexusVersion: 'nexus3',
 			protocol: 'http', 
 			repository: 'SpringBootApi', 
