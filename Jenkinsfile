@@ -27,7 +27,7 @@ pipeline {
 			nexusVersion: 'nexus3',
 			protocol: 'http', 
 			repository: 'SpringBootApi', 
-			version: '1.0-SNAPSHOT'
+			version: "${mavenPom.version}"
 			}
       }
       
