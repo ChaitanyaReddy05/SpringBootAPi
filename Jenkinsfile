@@ -3,6 +3,10 @@ agent any
 tools{
  maven 'maven5'
 }
+ environment {
+  my_aws_creds = credentials('chaitanya')
+  
+ }
 stages {
 
    stage ('Compile phase') {
