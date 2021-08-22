@@ -8,7 +8,11 @@ stages {
    stage ('Compile phase') {
 
 steps{
-  sh 'python3 --version'      
+  sh '''
+  aws --version
+  aws ec2 describe-instances
+  python3 --version
+  '''      
 }
    }
 }
