@@ -8,7 +8,7 @@ stages {
    stage ('Compile phase') {
 
 steps{
-  sh script: 'mvn clean package'      
+  sh 'python3 --version'      
 }
    }
 }
