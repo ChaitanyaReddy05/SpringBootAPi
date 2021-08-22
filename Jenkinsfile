@@ -4,7 +4,7 @@ tools{
  maven 'maven5'
 }
  environment {
-  my_aws_creds = credentials('chaitanya')
+  AWS_DEFAULT_REGION = 'us-east-1'
   
  }
 stages {
@@ -12,11 +12,15 @@ stages {
    stage ('Compile phase') {
 
 steps{
-  sh '''
-  aws --version
-  aws ec2 describe-instances
-  python3 --version
-  '''      
+ script {
+    withCredentials([[
+        $class: 'AmazonWebServicesCredentialsBinding', 
+        credentialsId: 'chaitanya',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+    ]]) {
+        sh 'aws ec2 describe-instances'
+    }
 }
    }
 }
