@@ -13,6 +13,7 @@ public class policy_bs {
             new policy_details("PolicyA","Insurance for everyone","10000","10 years"),
                 new policy_details("PolicyB","Insurance for older","10000","15 years"),
                 new policy_details("PolicyC","Insurance for younger","10000","20 years")
+        new policy_details("PolicyC","Insurance for younger","10000","20 years")
                 ));
     public List<policy_details> allpolicies(){
         return Policy_details;
