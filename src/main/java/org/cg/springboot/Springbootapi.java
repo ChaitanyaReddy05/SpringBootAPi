@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -37,10 +38,7 @@ public class Springbootapi {
     public void addpolicy(@RequestBody policy_details policy_detail){
          policy_bs.addpolicy(policy_detail);
     }
-     @PostMapping("/policy")
-    public void addpolicy(@RequestBody policy_details policy_detail){
-         policy_bs.addpolicy(policy_detail);
-    }
+
     
 
 
