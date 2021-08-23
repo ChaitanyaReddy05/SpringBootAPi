@@ -109,13 +109,13 @@ steps{
             if (params.run_tests == 'All'){
             
                 sh  '''
-                    echo "Functional tests done
+                    echo "Functional tests done"
 
                 '''
             }
             else{
                 '''
-                echo running on regression
+                echo "running on regression"
                 '''
             }
         }
@@ -132,7 +132,7 @@ steps{
 
             
         sh  '''
-            echo "Functional tests done
+            echo "Functional tests done"
 
         '''
         }
