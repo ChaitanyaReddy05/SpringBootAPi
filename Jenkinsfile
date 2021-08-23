@@ -34,8 +34,8 @@ steps{
             agent any
             steps {
             script{
-                if (params.BRANCH == 'prod'){
-                
+                def mavenPom = readMavenPom file:'pom.xml'
+                if (params.BRANCH == 'develop') or (mavenPom.version.endsWith("release")) {                
                    withSonarQubeEnv('sonarserver') {
                 sh 'mvn sonar:sonar'
               }
@@ -48,7 +48,8 @@ steps{
 stage("Quality Gate") {
 steps {
     script{
-    if (params.BRANCH == 'prod'){
+ def mavenPom = readMavenPom file:'pom.xml'
+    if (params.BRANCH == 'develop') or (mavenPom.version.endsWith("release")){
     timeout(time: 1, unit: 'HOURS') {
     waitForQualityGate abortPipeline: true
     }
