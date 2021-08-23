@@ -98,7 +98,7 @@ steps{
                if (params.BRANCH == 'master'){
 				def mavenPom = readMavenPom file:'pom.xml'
 				def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
-                def nexusgroupId = mavenPom.nexusgroupId
+                def nexusgroupId = mavenPom.groupId
                 def nexusartifactId =  mavenPom.artifactId
 				nexusArtifactUploader artifacts: 
 				[[artifactId: "${nexusartifactId}",
@@ -171,19 +171,15 @@ steps{
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
     ]])
     {
-        if (params.build_image == 'yes'){
-            
+        if (params.build_image == 'yes'){            
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
             def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
             dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"      
-
             echo "building images" 
             sh 'aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_DEFAULT_REGION}".amazonaws.com' 
-
             sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-
             sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
        
         }
