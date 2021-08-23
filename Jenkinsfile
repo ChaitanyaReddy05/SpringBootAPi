@@ -42,7 +42,7 @@ steps{
 steps{
     script{
 
-        if (params.BRANCH == 'master'){
+        if (params.BRANCH == 'Develop'){
         sh 'mvn clean package'      
         }
     }
@@ -55,7 +55,7 @@ steps{
             agent any
             steps {
             script{
-                if (params.BRANCH == 'develop'){                
+                if (params.BRANCH == 'Develop'){                
                    withSonarQubeEnv('sonarserver') {
                 sh 'mvn sonar:sonar'
               }
@@ -68,7 +68,7 @@ steps{
 stage("Quality Gate") {
 steps {
     script{
-    if (params.BRANCH == 'develop') {
+    if (params.BRANCH == 'Develop') {
     timeout(time: 1, unit: 'HOURS') {
     waitForQualityGate abortPipeline: true
     }
@@ -83,7 +83,7 @@ steps {
 
 steps{
     script{
-        if (params.BRANCH == 'master'){
+        if (params.BRANCH == 'Develop'){
         sh  'mvn clean install'
         }
     }
@@ -95,7 +95,7 @@ steps{
 
 			steps{
 			script{
-               if (params.BRANCH == 'master'){
+               if (params.BRANCH == 'Develop'){
 				def mavenPom = readMavenPom file:'pom.xml'
 				def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
                 def nexusgroupId = mavenPom.groupId
