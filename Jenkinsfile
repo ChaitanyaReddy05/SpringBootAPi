@@ -21,7 +21,7 @@ steps{
 steps{
     script{
 
-        if (params.BRANCH == 'master')){
+        if (params.BRANCH == 'master'){
         sh 'mvn clean package'      
         }
     }
