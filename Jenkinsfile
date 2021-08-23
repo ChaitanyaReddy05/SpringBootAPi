@@ -5,13 +5,6 @@ tools{
 }
 stages {
 
-   stage ('Compile phase') {
-
-steps{
-  sh script: 'mvn clean package'      
-}
-
-}
 
  stage("build & SonarQube analysis") {
             agent any
