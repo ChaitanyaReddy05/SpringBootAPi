@@ -122,7 +122,7 @@ steps{
 steps{
     script{
         if (params.BRANCH == 'master'){
-            if (params.run_tests == 'All'){
+            if (params.run_tests == 'Functional'){
             
                 sh  '''
                     echo "Functional tests done"
