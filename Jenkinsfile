@@ -3,6 +3,12 @@ agent any
 tools{
  maven 'maven5'
 }
+ environment {
+    AWS_DEFAULT_REGION="us-east-1"   
+    AWS_ACCOUNT_ID = "663986567307"
+
+    
+  }
 	  parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
 
@@ -157,16 +163,15 @@ stage ('Build image and push to ECR') {
 steps{
     script{
         if (params.build_image == 'yes'){
-            sh '''
+            def mavenPom = readMavenPom file:'pom.xml'
+			def IMAGE_REPO_NAME = mavenPom.artifactId
+            def IMAGE_TAG = mavenPom.version
+            def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+            def dockerImage = docker.build REPOSITORY_URI + ":$IMAGE_TAG"         
 
             echo "building images" 
-
-            '''
-
-
-
-
-            
+            aws ecr get-login --no-include-email --region "${AWS_DEFAULT_REGION}"
+		docker push "${dockerImage}"
        
         }
     }
