@@ -23,7 +23,7 @@ steps{
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
     ]]) {
         sh '''
-        echo "${accessKeyVariable}"
+        echo "${AWS_ACCESS_KEY_ID}"
         '''
     }
 }
