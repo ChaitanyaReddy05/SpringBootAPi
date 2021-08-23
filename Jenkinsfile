@@ -4,6 +4,14 @@ tools{
  maven 'maven5'
 }
 stages {
+	
+	 stage ('check env phase') {
+
+steps{
+	sh script: "echo ${BRANCH}"
+}
+
+}
 
    stage ('Compile phase') {
 
