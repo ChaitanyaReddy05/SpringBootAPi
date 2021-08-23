@@ -6,9 +6,7 @@ tools{
 	  parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
 
-    
-  }
-	
+      }	
 
 	
 stages {
@@ -18,6 +16,16 @@ stages {
 steps{
 	sh  "echo ${params.BRANCH}"
     sh "echo ${params.run_tests}"
+     withCredentials([[
+        $class: 'AmazonWebServicesCredentialsBinding', 
+        credentialsId: 'chaitanya',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+    ]]) {
+        sh '''
+        echo "${accessKeyVariable}"
+        '''
+    }
 }
 
 }
@@ -134,6 +142,29 @@ steps{
         '''
 
              }
+
+            
+       
+        }
+    }
+        
+}
+
+}
+
+stage ('Build image and push to ECR') {
+
+steps{
+    script{
+        if (params.build_image == 'yes'){
+            sh '''
+
+            echo "building images" 
+
+            '''
+
+
+
 
             
        
