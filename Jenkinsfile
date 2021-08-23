@@ -4,9 +4,14 @@ tools{
  maven 'maven5'
 }
 	  parameters {
-    gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH',
-    string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
+    gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+    
   }
+	
+	 parameters {
+		     string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
+	 }
+	
 stages {
 	
 	 stage ('check env phase') {
