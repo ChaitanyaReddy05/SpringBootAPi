@@ -19,7 +19,13 @@ steps{
    stage ('Compile phase') {
 
 steps{
-  sh script: 'mvn clean package'      
+    script{
+
+        if (params.name == 'master'){
+        sh 'mvn clean package'      
+        }
+    }
+   
 }
 
 }
@@ -27,24 +33,41 @@ steps{
  stage("build & SonarQube analysis") {
             agent any
             steps {
-              withSonarQubeEnv('sonarserver') {
+            script{
+                if (params.name == 'dev'){
+                
+                   withSonarQubeEnv('sonarserver') {
                 sh 'mvn sonar:sonar'
               }
             }
-          }
-          stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
             }
+
+            }
+           
           }
+stage("Quality Gate") {
+steps {
+    script{
+    if (params.name == 'dev'){
+    timeout(time: 1, unit: 'HOURS') {
+    waitForQualityGate abortPipeline: true
+    }
+    }
+    }
+    
+}
+}
  
 
    stage ('Build phase') {
 
 steps{
-  sh script: 'mvn clean install'      
+    script{
+        if (params.name == 'master'){
+        sh  'mvn clean install'
+        }
+    }
+        
 }
 
 }
@@ -52,6 +75,7 @@ steps{
 
 			steps{
 			script{
+                if (params.name == 'master'){
 				def mavenPom = readMavenPom file:'pom.xml'
 				def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
 				nexusArtifactUploader artifacts: 
@@ -67,6 +91,7 @@ steps{
 				repository: nexusreponame, 
 				version: "${mavenPom.version}"
 				}
+            }
 			}
 
 }
@@ -75,4 +100,3 @@ steps{
 
 }
 }
-
