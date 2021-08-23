@@ -4,14 +4,16 @@ tools{
  maven 'maven5'
 }
 	  parameters {
-    gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+    gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH',
+    string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
   }
 stages {
 	
 	 stage ('check env phase') {
 
 steps{
-	sh script: "echo ${params.BRANCH}"
+	sh  "echo ${params.BRANCH}"
+    sh "echo ${params.run_tests}"
 }
 
 }
@@ -34,8 +36,7 @@ steps{
             agent any
             steps {
             script{
-                def mavenPom = readMavenPom file:'pom.xml'
-                if (params.BRANCH == 'develop') or (mavenPom.version.endsWith("release")) {                
+                if (params.BRANCH == 'develop'){                
                    withSonarQubeEnv('sonarserver') {
                 sh 'mvn sonar:sonar'
               }
@@ -48,8 +49,7 @@ steps{
 stage("Quality Gate") {
 steps {
     script{
- def mavenPom = readMavenPom file:'pom.xml'
-    if (params.BRANCH == 'develop') or (mavenPom.version.endsWith("release")){
+    if (params.BRANCH == 'develop') {
     timeout(time: 1, unit: 'HOURS') {
     waitForQualityGate abortPipeline: true
     }
@@ -94,6 +94,46 @@ steps{
 				}
             }
 			}
+
+}
+   stage ('Functional Testing') {
+
+steps{
+    script{
+        if (params.BRANCH == 'master'){
+            if (params.run_tests == 'All'){
+            
+                sh  '''
+                    echo "Functional tests done
+
+                '''
+            }
+            else{
+                '''
+                echo running on regression
+                '''
+            }
+        }
+    }
+        
+}
+
+}
+   stage ('Regression Testing') {
+
+steps{
+    script{
+        if (params.BRANCH == 'master'){
+
+            
+        sh  '''
+            echo "Functional tests done
+
+        '''
+        }
+    }
+        
+}
 
 }
 
