@@ -128,10 +128,9 @@ steps{
 steps{
     script{
         if (params.BRANCH == 'master'){
-             if (params.run_tests == 'reg'){
+             if (params.run_tests == 'regression'){
                   sh  '''
             echo "Regression tests done"
-
         '''
 
              }
