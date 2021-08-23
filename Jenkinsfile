@@ -20,10 +20,9 @@ steps{
 
 steps{
     script{
-
-        if (params.name == 'master'){
+        
         sh 'mvn clean package'      
-        }
+        
     }
    
 }
