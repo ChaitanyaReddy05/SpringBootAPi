@@ -3,12 +3,15 @@ agent any
 tools{
  maven 'maven5'
 }
+	  parameters {
+    gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+  }
 stages {
 	
 	 stage ('check env phase') {
 
 steps{
-	sh script: "echo ${BRANCH}"
+	sh script: 'echo "${params.BRANCH}"'
 }
 
 }
