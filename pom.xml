@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.cg.springboot</groupId>
     <artifactId>springbootapi</artifactId>
-    <version>5.5-SNAPSHOT</version>
+    <version>5.5-release</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
