@@ -21,7 +21,7 @@ steps{
 steps{
     script{
 
-        if (params.name.equals("master")){
+        if (params.name.trim().equals("master")){
         sh 'mvn clean package'      
         }
     }
