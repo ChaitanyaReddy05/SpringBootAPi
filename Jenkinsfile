@@ -6,6 +6,7 @@ tools{
  environment {
     AWS_DEFAULT_REGION="us-east-1"   
     AWS_ACCOUNT_ID = "663986567307"
+    NEXUS_URL =  "35.153.66.131:8081"
 
     
   }
@@ -97,14 +98,16 @@ steps{
                if (params.BRANCH == 'master'){
 				def mavenPom = readMavenPom file:'pom.xml'
 				def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
+                def nexusgroupId = mavenPom.nexusgroupId
+                def nexusartifactId =  mavenPom.artifactId
 				nexusArtifactUploader artifacts: 
-				[[artifactId: 'springbootapi',
+				[[artifactId: "${nexusartifactId}",
 				classifier: '', 
 				file: "target/springbootapi-${mavenPom.version}.jar", 
 				type: 'jar']], 
 				credentialsId: 'NEXUS', 
-				groupId: 'org.cg.springboot', 
-				nexusUrl: '35.153.66.131:8081', 
+				groupId: "${nexusgroupId}", 
+				nexusUrl: "${NEXUS_URL}", 
 				nexusVersion: 'nexus3',
 				protocol: 'http', 
 				repository: nexusreponame, 
