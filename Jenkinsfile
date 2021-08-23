@@ -5,12 +5,12 @@ tools{
 }
 	  parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+	string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
+
     
   }
 	
-	 parameters {
-		     string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
-	 }
+
 	
 stages {
 	
