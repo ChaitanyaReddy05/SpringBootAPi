@@ -5,7 +5,6 @@ tools{
 }
 	  parameters {
     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-	string(defaultValue: "All", description: 'Tests?', name: 'run_tests')
 
     
   }
@@ -129,10 +128,13 @@ steps{
 steps{
     script{
         if (params.BRANCH == 'master'){
+             if (params.run_tests == 'reg'){
+
+             }
 
             
         sh  '''
-            echo "Functional tests done"
+            echo "Regression tests done"
 
         '''
         }
