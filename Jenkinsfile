@@ -167,10 +167,11 @@ steps{
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
             def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-            dockerImage = docker.build REPOSITORY_URI + ":$IMAGE_TAG"         
+            dockerImage = docker.build REPOSITORY_URI + ":$IMAGE_TAG"      
 
             echo "building images" 
-            sh 'aws ecr get-login --no-include-email --region "${AWS_DEFAULT_REGION}"'
+            sh 'aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_DEFAULT_REGION}".amazonaws.com' 
+
             docker push dockerImage
        
         }
