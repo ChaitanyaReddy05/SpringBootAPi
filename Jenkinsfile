@@ -11,7 +11,7 @@ stages {
 	 stage ('check env phase') {
 
 steps{
-	sh script: 'echo "${params.BRANCH}"'
+	sh script: "echo ${params.BRANCH}"
 }
 
 }
