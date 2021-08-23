@@ -162,7 +162,14 @@ stage ('Build image and push to ECR') {
 
 steps{
     script{
+          withCredentials([[
+        $class: 'AmazonWebServicesCredentialsBinding', 
+        credentialsId: 'chaitanya',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+    ]])
         if (params.build_image == 'yes'){
+            
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
