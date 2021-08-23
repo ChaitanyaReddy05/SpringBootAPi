@@ -37,6 +37,11 @@ public class Springbootapi {
     public void addpolicy(@RequestBody policy_details policy_detail){
          policy_bs.addpolicy(policy_detail);
     }
+     @PostMapping("/policy")
+    public void addpolicy(@RequestBody policy_details policy_detail){
+         policy_bs.addpolicy(policy_detail);
+    }
+    
 
 
 }
