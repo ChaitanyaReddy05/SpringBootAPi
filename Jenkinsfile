@@ -214,8 +214,7 @@ steps{
                              returnStdout: true).trim()
 
             echo "class ${amap}.getClass()"
-            def scan_json = JSONObject.fromObject(amap)
-            writeJSON file: 'data.json', json: scan_json           
+            writeJSON file: 'data.json', json: amap           
                   
         }
     }
