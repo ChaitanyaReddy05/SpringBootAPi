@@ -211,7 +211,8 @@ steps{
             sh 'aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_DEFAULT_REGION}".amazonaws.com'
             echo "scanning images" 
             def amap = sh "aws ecr describe-image-scan-findings --repository-name ${IMAGE_REPO_NAME} --image-id imageTag=${IMAGE_TAG} --region ${AWS_DEFAULT_REGION}"
-            writeJSON file: 'data.json', json:  JSONObject.fromObject(amap)           
+            def scan_json = JSONObject.fromObject(amap)
+            writeJSON file: 'data.json', json: scan_json           
                   
         }
     }
