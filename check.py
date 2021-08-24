@@ -8,7 +8,7 @@ def check_for_vulnerabilities():
     for x in data['imageScanFindings']['findings']:
         if x['severity'] == 'CRITICAL' or x['severity'] == 'HIGH' or x['severity'] == 'MEDIUM':            
             f.close()
-            return True
+            return False
     f.close()
     return False
 
