@@ -212,8 +212,9 @@ steps{
             def amap = sh (script : "aws ecr describe-image-scan-findings --repository-name ${IMAGE_REPO_NAME} --image-id imageTag=${IMAGE_TAG} --region ${AWS_DEFAULT_REGION}",
                              returnStdout: true).trim()
             writeJSON file: 'data.json', json: amap 
+		echo "start python"
              def check_vul = sh(script:'python3 check.py',returnStdout: true) 
-            "echo ${check_vul}"
+            echo "${check_vul}"
                   
         }
     }
