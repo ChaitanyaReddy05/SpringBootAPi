@@ -13,5 +13,5 @@ def check_for_vulnerabilities():
     return False
 
 if __name__== '__main__':
-    check_for_vulnerabilities()
+    print(check_for_vulnerabilities())
 
