@@ -203,7 +203,6 @@ steps{
     ]])
     {
         if (params.build_image == 'yes'){  
-
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
@@ -212,9 +211,8 @@ steps{
             echo "scanning images" 
             def amap = sh (script : "aws ecr describe-image-scan-findings --repository-name ${IMAGE_REPO_NAME} --image-id imageTag=${IMAGE_TAG} --region ${AWS_DEFAULT_REGION}",
                              returnStdout: true).trim()
-
-            echo "class ${amap}.getClass()"
-            writeJSON file: 'data.json', json: amap           
+            writeJSON file: 'data.json', json: amap  
+            sh 'python3 check.py'         
                   
         }
     }
