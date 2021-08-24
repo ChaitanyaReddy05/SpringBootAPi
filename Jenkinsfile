@@ -171,7 +171,7 @@ steps{
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
     ]])
     {
-        if (params.build_image == 'yes'){            
+        if (params.build_image == 'no'){            
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
@@ -182,6 +182,37 @@ steps{
             sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
             sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
        
+        }
+    }
+
+    } 
+}
+
+}
+
+
+stage ('ECR scan Analysis') {
+
+steps{
+    script{
+          withCredentials([[
+        $class: 'AmazonWebServicesCredentialsBinding', 
+        credentialsId: 'chaitanya',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+    ]])
+    {
+        if (params.build_image == 'yes'){  
+
+            def mavenPom = readMavenPom file:'pom.xml'
+			def IMAGE_REPO_NAME = mavenPom.artifactId
+            def IMAGE_TAG = mavenPom.version
+            def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+            sh 'aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_DEFAULT_REGION}".amazonaws.com'
+            echo "scanning images" 
+            def amap = sh "aws ecr describe-image-scan-findings --repository-name ${IMAGE_REPO_NAME} --image-id imageTag=${IMAGE_TAG} --region ${AWS_DEFAULT_REGION}"
+            writeJSON file: 'data.json', json: amap           
+                  
         }
     }
 
