@@ -80,7 +80,9 @@ stages {
     }
    stage ('Functional Testing') {
         when {
-             allOf { expression { params.BRANCH == 'master'} expression { params.run_tests == 'Functional'} }
+             allOf {
+                  expression { params.BRANCH == 'master'}
+                  expression { params.run_tests == 'Functional'} }
             }
         steps{
             script{                   
@@ -93,7 +95,9 @@ stages {
     }
    stage ('Regression Testing') {
         when {
-             allOf { expression { params.BRANCH == 'master'} expression { params.run_tests == 'regression'} }
+             allOf {
+                  expression { params.BRANCH == 'master'} 
+                  expression { params.run_tests == 'regression'} }
             }
 
         steps{
