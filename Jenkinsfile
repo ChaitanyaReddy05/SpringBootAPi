@@ -44,11 +44,9 @@ steps{
 
 steps{
   
-    script{
-
-        if (params.BRANCH == 'Develop'){
+    script{        
         sh 'mvn clean package'      
-        }
+        
     }
    
 }
@@ -56,13 +54,16 @@ steps{
 }
 
  stage("build & SonarQube analysis") {
+      when {
+         expression { params.BRANCH == 'Develop' }
+     }
             agent any
             steps {
             script{
-                if (params.BRANCH == 'Develop'){                
+                             
                    withSonarQubeEnv('sonarserver') {
                 sh 'mvn sonar:sonar'
-              }
+              
             }
             }
 
@@ -70,13 +71,16 @@ steps{
            
           }
 stage("Quality Gate") {
+     when {
+         expression { params.BRANCH == 'Develop' }
+     }
 steps {
     script{
-    if (params.BRANCH == 'Develop') {
+    
     timeout(time: 1, unit: 'HOURS') {
     waitForQualityGate abortPipeline: true
     }
-    }
+    
     }
     
 }
@@ -84,22 +88,28 @@ steps {
  
 
    stage ('Build phase') {
+        when {
+         expression { params.BRANCH == 'Develop' }
+     }
 
 steps{
     script{
-        if (params.BRANCH == 'Develop'){
+       
         sh  'mvn clean install'
-        }
+        
     }
         
 }
 
 }
 	stage ('Upload Artifacts phase') {
+         when {
+         expression { params.BRANCH == 'Develop' }
+     }
 
 			steps{
 			script{
-               if (params.BRANCH == 'Develop'){
+               
 				def mavenPom = readMavenPom file:'pom.xml'
 				def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
                 def nexusgroupId = mavenPom.groupId
@@ -116,16 +126,17 @@ steps{
 				protocol: 'http', 
 				repository: nexusreponame, 
 				version: "${mavenPom.version}"
-				}
+				
             }
 			}
 
 }
    stage ('Functional Testing') {
-
+ when {
+         expression { params.BRANCH == 'master' }
+     }
 steps{
-    script{
-        if (params.BRANCH == 'master'){
+    script{       
             if (params.run_tests == 'Functional'){
             
                 sh  '''
@@ -138,17 +149,20 @@ steps{
                 echo "running on regression"
                 '''
             }
-        }
+        
     }
         
 }
 
 }
    stage ('Regression Testing') {
+        when {
+         expression { params.BRANCH == 'master' }
+     }
 
 steps{
     script{
-        if (params.BRANCH == 'master'){
+        
              if (params.run_tests == 'regression'){
                   sh  '''
             echo "Regression tests done"
@@ -158,13 +172,16 @@ steps{
 
             
        
-        }
+        
     }
 }
    }
 
 
 stage ('Build image and push to ECR') {
+     when {
+         expression { params.build_image == 'no' }
+     }
 
 steps{
     script{
@@ -175,7 +192,6 @@ steps{
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
     ]])
     {
-        if (params.build_image == 'no'){            
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
@@ -187,7 +203,7 @@ steps{
             sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
        
         }
-    }
+    
 
     } 
 }
@@ -196,6 +212,10 @@ steps{
 
 
 stage ('ECR scan Analysis') {
+    when {
+         expression { params.build_image == 'yes' }
+     }
+    
 
 steps{
     script{
@@ -206,7 +226,6 @@ steps{
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
     ]])
     {
-        if (params.build_image == 'yes'){  
             def mavenPom = readMavenPom file:'pom.xml'
 			def IMAGE_REPO_NAME = mavenPom.artifactId
             def IMAGE_TAG = mavenPom.version
@@ -224,7 +243,7 @@ steps{
 
             }
                   
-        }
+        
     }
 
     } 
