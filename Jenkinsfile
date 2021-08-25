@@ -114,23 +114,18 @@
         if (params.run_tests == 'Functional'){ 
             stage ('Functional Testing') {
                 steps{
-                        script{
-                                
-                                                            
+                        script{                      
                                         sh  '''
                                             echo "Functional tests done"
                                         '''
-                                    }
-                                    else{
-                                    sh  '''
-                                        echo "running on regression"
-                                        '''
-                                    }
+                                    
+                                  
                                 }
                             }                
                 }
 
             }
+    }
     if (params.BRANCH == 'master'){
         if (params.run_tests == 'regression'){
             stage ('Regression Testing') {
