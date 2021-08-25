@@ -141,18 +141,12 @@ steps{
      }
 steps{
     script{       
-            if (params.run_tests == 'Functional'){
             
                 sh  '''
                     echo "Functional tests done"
 
                 '''
-            }
-            else{
-              sh  '''
-                echo "running on regression"
-                '''
-            }
+           
         
     }
         
@@ -160,22 +154,21 @@ steps{
 
 }
    stage ('Regression Testing') {
-        when {
-         expression { params.BRANCH == 'master' }
+       when {
+     allOf {
+        expression { params.BRANCH == 'master'}
+        expression { params.run_tests == 'regression'}
+
+     }
      }
 
 steps{
     script{
         
-             if (params.run_tests == 'regression'){
                   sh  '''
             echo "Regression tests done"
         '''
 
-             }
-
-            
-       
         
     }
 }
