@@ -149,7 +149,7 @@ steps{
             }
             else{
               sh  '''
-                echo "running on regressions"
+                echo "running on regressionss"
                 '''
             }
         }
