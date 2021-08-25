@@ -134,8 +134,8 @@ steps{
    stage ('Functional Testing') {
  when {
      allOf {
-         params.BRANCH == 'master'
-         params.run_tests == 'Functional'
+        expression { params.BRANCH == 'master'}
+        expression { params.run_tests == 'Functional'}
 
      }
      }
@@ -260,4 +260,3 @@ steps{
 }
 }
       
-
