@@ -75,8 +75,7 @@
     if (params.BRANCH == 'Develop'){
         stage ('Build phase') {
             steps{
-                        script{
-                            {
+                        script{                            
                             sh  'mvn clean install'
                             }
                         }
@@ -84,7 +83,7 @@
             }
 
         }
-    }
+    
     if (params.BRANCH == 'Develop'){
         stage ('Upload Artifacts phase') {
             steps{
