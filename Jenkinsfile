@@ -38,11 +38,12 @@ steps{
 }
 
    stage ('Compile phase') {
-
-steps{
-    when {
+         when {
          expression { params.BRANCH == 'Develop' }
      }
+
+steps{
+  
     script{
 
         if (params.BRANCH == 'Develop'){
