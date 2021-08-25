@@ -133,7 +133,11 @@ steps{
 }
    stage ('Functional Testing') {
  when {
-         expression { params.BRANCH == 'master' }
+     allOf {
+         params.BRANCH == 'master'
+         params.run_tests == 'Functional'
+
+     }
      }
 steps{
     script{       
