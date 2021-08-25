@@ -15,7 +15,7 @@ agent any
      silentResponse: false,
 
      regexpFilterText: '$ref',
-    regexpFilterExpression: 'refs/heads/Develop'
+     regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
     )
   }
 tools{
