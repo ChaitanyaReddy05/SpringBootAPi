@@ -9,7 +9,7 @@ environment {
         NEXUS_URL =  "35.153.66.131:8081"    
 }
 parameters {
-        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'Develop', name: 'BRANCH', type: 'PT_BRANCH'
 
 }	   
 stages {	
