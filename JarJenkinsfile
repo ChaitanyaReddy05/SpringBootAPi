@@ -3,15 +3,3 @@ stage('Download from Nexus') {
             sh script: 'curl -u ${abc} -o app.jar "$NEXUS_URL".jar'
         }
     }
-
-
-stage("deploy"){
-       steps{
-          sshagent(['AWS']) {
-          sh """
-          scp app.jar ec2@xyz:/app/tomcat/
-          java -jar /app/tomcat/app.jar
-           """
-	    }
-    }
- }
