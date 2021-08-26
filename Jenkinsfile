@@ -93,14 +93,16 @@ stages {
     }
    stage('Download from Nexus') {
        when {expression { params.BRANCH == 'master' } }
-        script{  
-            withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
-                def nexusgroupId = mavenPom.groupId
-                def nexusartifactId =  mavenPom.artifactId
-                sh 'curl -L -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+       steps{
+            script{  
+                withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
+                    def nexusgroupId = mavenPom.groupId
+                    def nexusartifactId =  mavenPom.artifactId
+                    sh 'curl -L -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                }
             }
-        }
-    } 
+        } 
+   }
    stage ('Functional Testing') {
         when {
              allOf {
