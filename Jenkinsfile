@@ -5,15 +5,10 @@ triggers {
         genericVariables: [
         [key: 'ref', value: '$.ref']
         ],
-
         causeString: 'Triggered on $ref',
-
-
         printContributedVariables: true,
         printPostContent: true,
-
         silentResponse: false,
-
         regexpFilterText: '$ref',
         regexpFilterExpression: 'refs/heads/Develop'
     )
@@ -24,9 +19,9 @@ tools{
 environment {
         AWS_DEFAULT_REGION="us-east-1"   
         AWS_ACCOUNT_ID = "663986567307"
-        NEXUS_URL =  "35.153.66.131:8081"    
+        NEXUS_URL =  "18.234.168.6:8081"    
 }
-	   
+ 	   
 stages {	
     stage ('Compile phase') {
             when {expression { params.BRANCH == 'Develop' } }
@@ -92,6 +87,16 @@ stages {
             }
 		}
     }
+   stage('Download from Nexus') {
+       when {expression { params.BRANCH == 'master' } }
+        script{  
+            withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
+                def nexusgroupId = mavenPom.groupId
+                def nexusartifactId =  mavenPom.artifactId
+                sh 'curl -L -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+            }
+        }
+    } 
    stage ('Functional Testing') {
         when {
              allOf {
@@ -125,7 +130,7 @@ stages {
 
 
     stage ('Build image and push to ECR') {
-        when { expression { params.Build_Image == 'no' } }
+        when { expression { params.Build_Image == 'yes' } }
         steps{
             script{
                 withCredentials([[
