@@ -22,7 +22,7 @@ environment {
         NEXUS_URL =  "18.234.168.6:8081"    
 }
 parameters {
-        gitParameter branchFilter: '.*(Develop|master).*', defaultValue: 'develop', name: 'BRANCH', type: 'PT_BRANCH'
+        gitParameter branchFilter: '.*(Develop|master).*', defaultValue: 'Develop', name: 'BRANCH', type: 'PT_BRANCH'
 
 }
  	   
@@ -99,7 +99,7 @@ stages {
                     def mavenPom = readMavenPom file:'pom.xml'
                     def nexusgroupId = mavenPom.groupId
                     def nexusartifactId =  mavenPom.artifactId
-                    sh 'curl -L -X  -u ${NEXUS_CREDENTIALS} GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                    sh 'curl -L -u ${NEXUS_CREDENTIALS} -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
                 }
             }
         } 
