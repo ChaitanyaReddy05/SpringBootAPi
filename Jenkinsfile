@@ -1,5 +1,23 @@
 pipeline {
 agent any 
+triggers {
+        GenericTrigger(
+        genericVariables: [
+        [key: 'ref', value: '$.ref']
+        ],
+
+        causeString: 'Triggered on $ref',
+
+
+        printContributedVariables: true,
+        printPostContent: true,
+
+        silentResponse: false,
+
+        regexpFilterText: '$ref',
+        regexpFilterExpression: 'refs/heads/Develop'
+    )
+}
 tools{
         maven 'maven5'
 }
@@ -17,7 +35,7 @@ stages {
             when {expression { params.BRANCH == 'Develop' } }
             steps{                
                 script{        
-                    sh 'mvn clean package'                         
+                    sh 'mvn clean package'                        
                 }
             
             }
@@ -29,8 +47,7 @@ stages {
                 steps {
                         script{                                    
                             withSonarQubeEnv('sonarserver') {
-                            sh 'mvn sonar:sonar'
-                        
+                            sh 'mvn sonar:sonar'                        
                         }
                 }
             }
@@ -137,10 +154,8 @@ stages {
 
     }
 
-
     stage ('ECR scan Analysis') {
         when {expression { params.build_image == 'yes' }}  
-
         steps{
             script{
                 withCredentials([[
@@ -160,16 +175,13 @@ stages {
                                     returnStdout: true).trim()
                     writeJSON file: 'data.json', json: amap 
                     def check_vul = sh(script:'python3 check.py',returnStdout: true) .trim()
-                echo "Running python" 
-                    "echo ${check_vul}"
+                    echo "Running python" 
+                        "echo ${check_vul}"
                     if (check_vul == "True"){
                         sh "exit 1"
-
-                    }
-                        
+                    }                       
                 
             }
-
             } 
         }
 
