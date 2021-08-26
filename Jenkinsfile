@@ -121,7 +121,7 @@ stages {
         steps{
             script{               
                         sh  '''
-                    echo "Regression tests done"
+                    echo "Regression tests done5"
                 '''                
             }
         }
