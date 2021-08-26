@@ -38,7 +38,7 @@ stages {
         }
 
     stage("build & SonarQube analysis") {
-        when {expression { params.BRANCH == 'Develop' } }
+        when {expression { params.BRANCH == 'master' } }
                 agent any
                 steps {
                         script{                                    
@@ -50,7 +50,7 @@ stages {
             
     }
     stage("Quality Gate") {
-        when { expression { params.BRANCH == 'Develop' } }
+        when { expression { params.BRANCH == 'master' } }
         steps {
             script{                
             timeout(time: 1, unit: 'HOURS') {
