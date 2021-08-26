@@ -99,7 +99,7 @@ stages {
         when {
              allOf {
                   expression { params.BRANCH == 'master'}
-                  expression { params.run_tests == 'Functional'} }
+                  expression { params.Tests == 'Functional'} }
             }
         steps{
             script{                   
@@ -114,7 +114,7 @@ stages {
         when {
              allOf {
                   expression { params.BRANCH == 'master'} 
-                  expression { params.run_tests == 'regression'} }
+                  expression { params.Tests == 'regression'} }
             }
 
         steps{
@@ -128,7 +128,7 @@ stages {
 
 
     stage ('Build image and push to ECR') {
-        when { expression { params.build_image == 'no' } }
+        when { expression { params.Build-Image == 'no' } }
         steps{
             script{
                 withCredentials([[
@@ -155,7 +155,7 @@ stages {
     }
 
     stage ('ECR scan Analysis') {
-        when {expression { params.build_image == 'yes' }}  
+        when {expression { params.Build-Image == 'yes' }}  
         steps{
             script{
                 withCredentials([[
