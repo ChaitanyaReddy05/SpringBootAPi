@@ -21,6 +21,10 @@ environment {
         AWS_ACCOUNT_ID = "663986567307"
         NEXUS_URL =  "18.234.168.6:8081"    
 }
+parameters {
+        gitParameter branchFilter: '.*(Develop|master).*', defaultValue: 'develop', name: 'BRANCH', type: 'PT_BRANCH'
+
+}
  	   
 stages {	
     stage ('Compile phase') {
