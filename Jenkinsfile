@@ -128,7 +128,7 @@ stages {
 
 
     stage ('Build image and push to ECR') {
-        when { expression { params.Build-Image == 'no' } }
+        when { expression { params.Build_Image == 'no' } }
         steps{
             script{
                 withCredentials([[
@@ -155,7 +155,7 @@ stages {
     }
 
     stage ('ECR scan Analysis') {
-        when {expression { params.Build-Image == 'yes' }}  
+        when {expression { params.Build_Image == 'yes' }}  
         steps{
             script{
                 withCredentials([[
