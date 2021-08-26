@@ -100,7 +100,7 @@ stages {
                     def nexusrepoversion = mavenPom.version
                     def nexusgroupId = mavenPom.groupId
                     def nexusartifactId =  mavenPom.artifactId
-                    sh 'curl -L -u ${NEXUS_CREDENTIALS} -o release/${nexusartifactId}-${nexusrepoversion}.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                    sh 'curl -L -u ${NEXUS_CREDENTIALS} -o release/"${nexusartifactId}"-"${nexusrepoversion}".jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
                 }
             }
         } 
