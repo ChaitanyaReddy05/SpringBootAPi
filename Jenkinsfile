@@ -99,7 +99,7 @@ stages {
                     def mavenPom = readMavenPom file:'pom.xml'
                     def nexusgroupId = mavenPom.groupId
                     def nexusartifactId =  mavenPom.artifactId
-                    sh 'curl -L -X  "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                    sh 'curl -L -X  GET  "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi-release&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
                 }
             }
         } 
