@@ -96,6 +96,7 @@ stages {
        steps{
             script{  
                 withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
+                    def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
                     def mavenPom = readMavenPom file:'pom.xml'
                     def nexusrepoversion = mavenPom.version
                     def nexusgroupId = mavenPom.groupId
@@ -106,11 +107,8 @@ stages {
 		      sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
-
-                  	sh 'curl -L -u ${NEXUS_CREDENTIALS} -o spring-release.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                sh 'curl -L -u ${NEXUS_CREDENTIALS} -o "${nexusartifactId}"-"${nexusrepoversion}".jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=${nexusreponame}&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
               }
-
-
 
 		    }
                 }
