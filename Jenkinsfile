@@ -107,7 +107,7 @@ stages {
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
 
-                  	sh 'curl -L -u ${NEXUS_CREDENTIALS}  -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
+                  	sh 'curl -L -u ${NEXUS_CREDENTIALS} -o spring-release.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=SpringBootApi&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
               }
 
 
