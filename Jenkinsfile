@@ -120,6 +120,10 @@ stages {
        when {expression { params.BRANCH == 'master' } }
        steps{
             script{  
+                def mavenPom = readMavenPom file:'pom.xml'
+                def nexusrepoversion = mavenPom.version
+                def nexusgroupId = mavenPom.groupId
+                def nexusartifactId =  mavenPom.artifactId
                   s3Upload consoleLogLevel: 'INFO', 
                   dontSetBuildResultOnFailure: false, 
                   dontWaitForConcurrentBuildCompletion: false,
