@@ -96,11 +96,12 @@ stages {
        steps{
             script{  
                 withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
-                    def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
                     def mavenPom = readMavenPom file:'pom.xml'
                     def nexusrepoversion = mavenPom.version
                     def nexusgroupId = mavenPom.groupId
                     def nexusartifactId =  mavenPom.artifactId
+                    def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
+
 		    dir('release') {
 		      sh "pwd"
 		      sh 'ls'
