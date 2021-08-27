@@ -92,7 +92,7 @@ stages {
 		}
     }
    stage('Download from Nexus') {
-       when {expression { params.BRANCH == 'master' } }
+       when {expression { params.BRANCH == 'Develop' } }
        steps{
             script{  
                 withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
@@ -116,6 +116,23 @@ stages {
             }
         } 
    }
+   stage('Upload to S3') {
+       when {expression { params.BRANCH == 'master' } }
+       steps{
+            script{  
+                  s3Upload consoleLogLevel: 'INFO', 
+                  dontSetBuildResultOnFailure: false, 
+                  dontWaitForConcurrentBuildCompletion: false,
+                  entries: [[bucket: 'springbootapi', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "release/${nexusartifactId}-${nexusrepoversion}", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], 
+                  pluginFailureResultConstraint: 'FAILURE',
+                  profileName: 'springbootapi-codedeploy-s3', 
+                  userMetadata: []
+                }
+            }
+        } 
+   
+
+
    stage ('Functional Testing') {
         when {
              allOf {
