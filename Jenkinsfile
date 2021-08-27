@@ -108,7 +108,7 @@ stages {
 		      sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
-                sh "curl -L -u ${NEXUS_CREDENTIALS} -o ${nexusartifactId}-${nexusrepoversion}.jar -X GET http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=${nexusreponame}&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar -H 'accept: application/json' "
+                sh 'curl -L -u ${NEXUS_CREDENTIALS} -o "${nexusartifactId}"-${nexusrepoversion}.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=${nexusreponame}&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
               }
 
 		    }
