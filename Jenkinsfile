@@ -155,7 +155,7 @@ stages {
                         region: 'us-east-1',
                         s3bucket: 'springbootapi', 
                         s3prefix: '', 
-                        subdirectory: "SpringBootAPIProject",
+                        subdirectory: "",
                         versionFileName: '', 
                         waitForCompletion: true])                 
                 }
