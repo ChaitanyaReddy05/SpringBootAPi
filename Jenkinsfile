@@ -143,8 +143,6 @@ stages {
                 def nexusartifactId =  mavenPom.artifactId
                 step([$class: 'AWSCodeDeployPublisher',
                         applicationName: 'jsr', 
-                        awsAccessKey: '', 
-                        awsSecretKey: '', 
                         credentials: '', 
                         deploymentGroupAppspec: true, 
                         deploymentGroupName: 'jsr-dg', 
