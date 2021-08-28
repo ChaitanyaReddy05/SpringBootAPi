@@ -1,2 +1,2 @@
 #!/bin/bash
-kill $(cat ./pid.file)
+sudo kill -9 $(sudo lsof -t -i:8083)
