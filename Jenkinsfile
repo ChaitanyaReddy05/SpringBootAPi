@@ -103,8 +103,8 @@ stages {
                     def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
 
 		    dir('release') {           
-              sh "if [[ -d /${nexusartifactId}-${nexusrepoversion}]]; then  rm -r -d * fi"
-		      sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
+              	    sh "rm -r -d *"
+		    sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
                 sh 'curl -L -u ${NEXUS_CREDENTIALS} -o release.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=${nexusreponame}&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
