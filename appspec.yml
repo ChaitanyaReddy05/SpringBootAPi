@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user
+permissions:
+  - object: /home/ec2-user
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  ApplicationStop:
+    - location: Scripts/stop_server.sh
+      timeout: 3600
+      runas: root
+  BeforeInstall:
+    - location: Scripts/clean_instance.sh
+      timeout: 3600
+      runas: root
+  ApplicationStart:
+    - location: Scripts/start_server.sh
+      timeout: 3600
+      runas: root
+  ValidateService:
+    - location: Scripts/tests.sh
+      timeout: 3600
+      runas: root
