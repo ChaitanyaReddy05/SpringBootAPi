@@ -103,10 +103,7 @@ stages {
                     def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
 
 		    dir('release') {           
-              if [[ -d /"${nexusartifactId}"-"${nexusrepoversion}"]]; then
-                    echo "Removing Lock"
-                    rm -r -d *
-                fi
+              sh "if [[ -d /"${nexusartifactId}"-"${nexusrepoversion}"]]; then echo "Removing Lock" rm -r -d * fi"
 		      sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
