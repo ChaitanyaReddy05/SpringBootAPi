@@ -10,6 +10,9 @@ permissions:
     group: ec2-user
 hooks:
   ApplicationStop:
+    - location: Scripts/change_permissions.sh
+      timeout: 300
+      runas: root
     - location: Scripts/stop_server.sh
       timeout: 3600
       runas: root
