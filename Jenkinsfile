@@ -152,7 +152,7 @@ stages {
                         includes: '**', 
                         proxyHost: '', 
                         proxyPort: 0, 
-                        region: 'ap-east-1',
+                        region: 'us-east-1',
                         s3bucket: 'springbootapi', 
                         s3prefix: '', 
                         subdirectory: "SpringBootAPIProject",
