@@ -18,10 +18,10 @@ hooks:
       timeout: 3600
       runas: root
   ApplicationStart:
-    - location: springbootapi/Scripts/start_server.sh
+    - location: Scripts/start_server.sh
       timeout: 3600
       runas: root
   ValidateService:
-    - location: springbootapi/Scripts/tests.sh
+    - location: Scripts/tests.sh
       timeout: 3600
       runas: root
