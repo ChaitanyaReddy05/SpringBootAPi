@@ -19,7 +19,7 @@ tools{
 environment {
         AWS_DEFAULT_REGION="us-east-1"   
         AWS_ACCOUNT_ID = "663986567307"
-        NEXUS_URL =  "18.204.10.5:8081"    
+        NEXUS_URL =  "100.27.3.28:8081"    
 }
 parameters {
         gitParameter branchFilter: '.*(Develop|master).*', defaultValue: 'Develop', name: 'BRANCH', type: 'PT_BRANCH'
@@ -92,7 +92,7 @@ stages {
 		}
     }
    stage('Download from Nexus') {
-       when {expression { params.BRANCH == 'Develop' } }
+       when {expression { params.BRANCH == 'master' } }
        steps{
             script{  
                 withCredentials([usernameColonPassword(credentialsId: 'NEXUS', variable: 'NEXUS_CREDENTIALS')]) {
@@ -103,8 +103,7 @@ stages {
                     def nexusreponame = mavenPom.version.endsWith("SNAPSHOT") ? "SpringBootApi" : "SpringBootApi-release"
 
 		    dir('release') {
-		      sh "pwd"
-		      sh 'ls'
+              sh 'rm -r -d *'
 		      sh "mkdir ${nexusartifactId}-${nexusrepoversion}"
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
@@ -127,14 +126,43 @@ stages {
                   s3Upload consoleLogLevel: 'INFO', 
                   dontSetBuildResultOnFailure: false, 
                   dontWaitForConcurrentBuildCompletion: false,
-                  entries: [[bucket: 'springbootapi', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "release/${nexusartifactId}-${nexusrepoversion}/", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], 
+                  entries: [[bucket: 'springbootapi', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "release/${nexusartifactId}-${nexusrepoversion}", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], 
                   pluginFailureResultConstraint: 'FAILURE',
                   profileName: 'springbootapi-codedeploy-s3', 
                   userMetadata: []
                 }
             }
         } 
-   
+    stage('Deployment to EC2') {
+       when {expression { params.BRANCH == 'master' } }
+       steps{
+            script{  
+                def mavenPom = readMavenPom file:'pom.xml'
+                def nexusrepoversion = mavenPom.version
+                def nexusgroupId = mavenPom.groupId
+                def nexusartifactId =  mavenPom.artifactId
+                step([$class: 'AWSCodeDeployPublisher',
+                        applicationName: 'jsr', 
+                        awsAccessKey: '', 
+                        awsSecretKey: '', 
+                        credentials: '', 
+                        deploymentGroupAppspec: true, 
+                        deploymentGroupName: 'jsr-dg', 
+                        deploymentMethod: 'deploy', 
+                        excludes: '', 
+                        iamRoleArn: 'arn:aws:iam::663986567307:role/springbootapi-codedeploy-s3',                        
+                        includes: '**', 
+                        proxyHost: '', 
+                        proxyPort: 0, 
+                        region: 'ap-east-1',
+                        s3bucket: 'springbootapi', 
+                        s3prefix: '', 
+                        subdirectory: "SpringBootAPIProject",
+                        versionFileName: '', 
+                        waitForCompletion: true])                 
+                }
+            }
+        }  
 
 
    stage ('Functional Testing') {
