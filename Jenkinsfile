@@ -131,7 +131,7 @@ stages {
                   s3Upload consoleLogLevel: 'INFO', 
                   dontSetBuildResultOnFailure: false, 
                   dontWaitForConcurrentBuildCompletion: false,
-                  entries: [[bucket: 'springbootapi', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "release/${nexusartifactId}-${nexusrepoversion}", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], 
+                  entries: [[bucket: 'springbootapi', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "release/${nexusartifactId}-${nexusrepoversion}/", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], 
                   pluginFailureResultConstraint: 'FAILURE',
                   profileName: 'springbootapi-codedeploy-s3', 
                   userMetadata: []
