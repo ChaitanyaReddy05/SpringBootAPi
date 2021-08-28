@@ -2,29 +2,26 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user
+    destination: /home/ec2-user/springbootapi
 permissions:
-  - object: /home/ec2-user
+  - object: /home/ec2-user/springbootapi
     pattern: "**"
     owner: ec2-user
     group: ec2-user
 hooks:
   ApplicationStop:
-    - location: Scripts/change_permissions.sh
-      timeout: 300
-      runas: root
-    - location: Scripts/stop_server.sh
+    - location: springbootapi/Scripts/stop_server.sh
       timeout: 3600
       runas: root
   BeforeInstall:
-    - location: Scripts/clean_instance.sh
+    - location: springbootapi/Scripts/clean_instance.sh
       timeout: 3600
       runas: root
   ApplicationStart:
-    - location: Scripts/start_server.sh
+    - location: springbootapi/Scripts/start_server.sh
       timeout: 3600
       runas: root
   ValidateService:
-    - location: Scripts/tests.sh
+    - location: springbootapi/Scripts/tests.sh
       timeout: 3600
       runas: root
