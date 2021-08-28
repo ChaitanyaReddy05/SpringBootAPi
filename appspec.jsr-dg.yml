@@ -10,18 +10,18 @@ permissions:
     group: ec2-user
 hooks:
   ApplicationStop:
-    - location: springbootapi/Scripts/stop_server.sh
+    - location: Scripts/stop_server.sh
       timeout: 3600
       runas: root
   BeforeInstall:
-    - location: springbootapi/Scripts/clean_instance.sh
+    - location: Scripts/clean_instance.sh
       timeout: 3600
       runas: root
   ApplicationStart:
-    - location: springbootapi/Scripts/start_server.sh
+    - location: Scripts/start_server.sh
       timeout: 3600
       runas: root
   ValidateService:
-    - location: springbootapi/Scripts/tests.sh
+    - location: Scripts/tests.sh
       timeout: 3600
       runas: root
