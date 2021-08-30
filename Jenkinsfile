@@ -211,7 +211,7 @@ stages {
                     def IMAGE_TAG = mavenPom.version
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 		    sh 'cd release/'
-	            sh 'find . -type d -name '*@tmp' -print -delete'
+	            sh "find . -type d -name '*@tmp' -print -delete"
 		    sh 'cd ..'
 
                     dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"      
