@@ -15,7 +15,7 @@ if [ $URL2_STATUS_CODE -ne 200 ];then
 	echo "============================================================================================"
     exit 1
 fi
-URL3_STATUS_CODE=$(curl -LI http://localhost:8083/policy/PolicyA -o /dev/null -w '%{http_code}\n' -s)
+URL3_STATUS_CODE=$(curl -LI http://localhost:8081/policy/PolicyA -o /dev/null -w '%{http_code}\n' -s)
 if [ $URL3_STATUS_CODE -ne 200 ];then
 	echo "|                                  API Validation : Failed                                 |"
 	echo "============================================================================================"
