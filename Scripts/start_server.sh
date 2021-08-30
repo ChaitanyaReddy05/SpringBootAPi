@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /home/ec2-user/springbootapi/release
 cd $(ls -d */|head -n 1)
-nohup java -jar release.jar --server.port=8083 /dev/null 2> /dev/null < /dev/null &
+nohup java -jar release.jar --server.port=8083 > /dev/null 2> /dev/null < /dev/null &
