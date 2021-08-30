@@ -108,7 +108,7 @@ stages {
               dir("${nexusartifactId}-${nexusrepoversion}"){
 		        sh 'pwd'
                 sh 'curl -L -u ${NEXUS_CREDENTIALS} -o release.jar -X GET "http://${NEXUS_URL}/service/rest/v1/search/assets/download?sort=version&repository=${nexusreponame}&maven.groupId=${nexusgroupId}&maven.artifactId=${nexusartifactId}&maven.extension=jar" -H "accept: application/json"'
-              }
+	      }
 
 		    }
                 }
@@ -210,6 +210,10 @@ stages {
                     def IMAGE_REPO_NAME = mavenPom.artifactId
                     def IMAGE_TAG = mavenPom.version
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+		    sh 'cd release/'
+	            sh 'find . -type d -name '*@tmp' -print -delete'
+		    sh 'cd ..'
+
                     dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"      
                     echo "building images" 
                     sh 'aws ecr get-login-password --region "${AWS_DEFAULT_REGION}" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}".dkr.ecr."${AWS_DEFAULT_REGION}".amazonaws.com' 
