@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springbootapi-${ENVIRONMENT}
-  namespace: ${NAMESPACE}
+  name: springbootapi-$ENVIRONMENT
+  namespace: $NAMESPACE
   labels:
     app.kubernetes.io/name: springbootapi
     app.kubernetes.io/instance: springbootapi
@@ -16,17 +16,15 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: springbootapi
-    app.kubernetes.io/instance: springbootapi
+        app.kubernetes.io/instance: springbootapi
     spec:
-      imagePullSecrets:
-        - name: {}
       serviceAccountName: default
       securityContext: {}
       containers:
         - name: springbootapi
           securityContext:
             {}
-          image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
+          image: 663986567307.dkr.ecr.us-east-1.amazonaws.com/springbootapi:$DOCKER_TAG
           imagePullPolicy: Always
           ports:
             - name: http
