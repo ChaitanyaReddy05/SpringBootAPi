@@ -7,9 +7,9 @@ metadata:
     app.kubernetes.io/name: springbootapi
     app.kubernetes.io/instance: springbootapi
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-    - port: 8083
+    - port: 8080
       targetPort: http
       protocol: TCP
       name: http
