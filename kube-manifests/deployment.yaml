@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootapi-${ENVIRONMENT}
+  namespace: ${NAMESPACE}
+  labels:
+    app.kubernetes.io/name: springbootapi
+    app.kubernetes.io/instance: springbootapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: springbootapi
+      app.kubernetes.io/instance: springbootapi
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: springbootapi
+    app.kubernetes.io/instance: springbootapi
+    spec:
+      imagePullSecrets:
+        - name: {}
+      serviceAccountName: default
+      securityContext: {}
+      containers:
+        - name: springbootapi
+          securityContext:
+            {}
+          image: ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8083
+              protocol: TCP
