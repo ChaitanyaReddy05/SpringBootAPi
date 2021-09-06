@@ -19,7 +19,7 @@ tools{
 environment {
         AWS_DEFAULT_REGION="us-east-1"   
         AWS_ACCOUNT_ID = "663986567307"
-        NEXUS_URL =  "54.82.199.61:8081"    
+        NEXUS_URL =  "52.86.249.122:8081"   
 }
 parameters {
         gitParameter branchFilter: '.*(Develop|master).*', defaultValue: 'Develop', name: 'BRANCH', type: 'PT_BRANCH'
