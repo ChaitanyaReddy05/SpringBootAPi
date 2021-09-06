@@ -6,7 +6,7 @@
     <groupId>org.cg.springboot</groupId>
     <artifactId>springbootapi</artifactId>
 
-    <version>15.0-SNAPSHOT</version>
+    <version>15.0-RELEASE</version>
 
     <packaging>jar</packaging>
     <parent>
