@@ -11,19 +11,46 @@ agent any
  	   
 stages {	
 
-    stage('')
+    stage('Checkout') {
+      steps {
+        script {
+           // The below will clone your repo and will be checked out to master branch by default.
+           git credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git'
+           sh '''
+            cd prodj2ee/a12183897d/in-dgb/KMF
+            mkdir DBINUI
+            mv DBINUI.zip DBINUI
+            cd  DBINUI            
+            unzip DBINUI.zip
+            cd DBINUI
+            cp -r  * j2ee/package/rel/DBIN/DBINUI/
+            cd ../../
+            rm DBIN.zip
+            mv DBIN DBIN.zip
 
-    stage ('Compile phase') {
-            steps{                
-                script{        
+           '''
+
+          }
+       }
+
+
+}
+
+        stage('Update GIT') {
+        steps {
+            script {
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                withCredentials([usernamePassword(credentialsId: 'GIT')]) {
+                    sh "git config user.email rchaitureddy@gmail.com"
+                    sh "git config user.name Chaitanya"
+                    sh "git add ."
+                    sh "git commit -m 'Triggered Build from jenkins'"
+                    sh "git push https://github.com/ChaitanyaReddy05/SpringBootAPi.git"
                 }
-            
+            }
             }
         }
-
- 
-
-
+        }
 }
 }
       
