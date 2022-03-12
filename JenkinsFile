@@ -1,0 +1,29 @@
+pipeline {
+agent any 
+
+// unzip both the folders - prodj2ee and relj2ee
+// if MB==true copy from prodj2ee DBINUI/Apps including subfolders to relj2ee/Apps
+// and prodj2ee middlewarebootconfig to relj2ee MBL folder
+// zip relj2ee and commit
+// push back to repo
+
+
+ 	   
+stages {	
+
+    stage('')
+
+    stage ('Compile phase') {
+            steps{                
+                script{        
+                }
+            
+            }
+        }
+
+ 
+
+
+}
+}
+      
