@@ -11,9 +11,12 @@ agent any
  	   
 stages {	
 
+    
     stage('Checkout') {
+        when { expression { return params.MB } }
       steps {
         script {
+            try {
             sh "yes | rm -r /var/jenkins_home/workspace/release_package_copy/*"
            // The below will clone your repo and will be checked out to master branch by default.
         //    git credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git'
@@ -25,19 +28,34 @@ stages {
                 ],
                 submoduleCfg: [],
                 userRemoteConfigs: [
-                    [ credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git']
+                    [ credentialsId: 'GI', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git']
                 ]
             ])
+            sh '''
+            cd prodj2ee/a12183897d/in-dgb/middlare 
+            '''
+            sh 'find -iname "Digi*" -exec cp {}  /var/jenkins_home/workspace/release_package_copy/j2ee/package/rel/DBIN.zip/ ";"'
+
           }
+        catch (Exception e){ 
+            currentBuild.result = 'FAILURE'
+            echo 'Exception occurred: ' + e.toString()
+            throw e
+
+        }    
+        }
+
        }
 
 
 }
- stage('extraction') {
+ stage('MB-extraction') {
+     when { expression { return params.iB } }
       steps {
         script {
+            try {
             sh '''
-                cd /var/jenkins_home/workspace/release_package_copy/prodj2ee/a12183897d/in-dgb/KMF
+                cd /var/jenkins_home/workspace/release_package_copy/prodj2ee/a12183897d/in-dgb/KM
                 mkdir DBINUI
                 mv DBINUI.zip DBINUI
                 cd  DBINUI            
@@ -46,13 +64,18 @@ stages {
                 cp -r  * /var/jenkins_home/workspace/release_package_copy/j2ee/package/rel/DBIN/DBINUI/
                 cd /var/jenkins_home/workspace/release_package_copy/j2ee/package/rel/
                 rm DBIN.zip
-                mv DBIN DBIN.zip           
-                '''
+                zip DBIN.zip DBIN
+                rm DBIN                '''
+        }
+        catch (Exception e){ 
+            echo 'Exception occurred: ' + e.toString()
+
+        }
         }
       }
  }
  stage('update rel repo'){
-
+     when { expression { return params.iB } }
      steps{
 
          script{          
@@ -64,7 +87,7 @@ stages {
                 git config --global user.email "rchaitureddy@gmail.com"
                 git add .
                 git commit -m "commited from jenkins"
-                git push https://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@github.com/ChaitanyaReddy05/SpringBootAPi.git
+                git push https://@github.com/ChaitanyaReddy05/SpringBootAPi.git
                 '''
                 }
 
