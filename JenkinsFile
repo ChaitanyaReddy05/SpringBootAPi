@@ -14,43 +14,65 @@ stages {
     stage('Checkout') {
       steps {
         script {
+            sh "yes | rm -r /var/jenkins_home/workspace/release_package_copy/*"
            // The below will clone your repo and will be checked out to master branch by default.
-           git credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git'
-           sh '''
-            cd prodj2ee/a12183897d/in-dgb/KMF
-            mkdir DBINUI
-            mv DBINUI.zip DBINUI
-            cd  DBINUI            
-            unzip DBINUI.zip
-            cd DBINUI
-            cp -r  * j2ee/package/rel/DBIN/DBINUI/
-            cd ../../
-            rm DBIN.zip
-            mv DBIN DBIN.zip
-
-           '''
-
+        //    git credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git'
+            checkout([
+                $class: 'GitSCM',
+                branches: [[name: "master"]],
+                extensions: [
+                    [$class: 'CloneOption', noTags: true, reference: '', shallow: true]
+                ],
+                submoduleCfg: [],
+                userRemoteConfigs: [
+                    [ credentialsId: 'GIT', url: 'https://github.com/ChaitanyaReddy05/SpringBootAPi.git']
+                ]
+            ])
           }
        }
 
 
 }
+ stage('extraction') {
+      steps {
+        script {
+            sh '''
+                cd /var/jenkins_home/workspace/release_package_copy/prodj2ee/a12183897d/in-dgb/KMF
+                mkdir DBINUI
+                mv DBINUI.zip DBINUI
+                cd  DBINUI            
+                unzip DBINUI.zip
+                cd DBINUI
+                cp -r  * /var/jenkins_home/workspace/release_package_copy/j2ee/package/rel/DBIN/DBINUI/
+                cd /var/jenkins_home/workspace/release_package_copy/j2ee/package/rel/
+                rm DBIN.zip
+                mv DBIN DBIN.zip           
+                '''
+        }
+      }
+ }
+ stage('update rel repo'){
 
-        stage('Update GIT') {
-        steps {
-            script {
-            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                withCredentials([usernamePassword(credentialsId: 'GIT')]) {
-                    sh "git config user.email rchaitureddy@gmail.com"
-                    sh "git config user.name Chaitanya"
-                    sh "git add ."
-                    sh "git commit -m 'Triggered Build from jenkins'"
-                    sh "git push https://github.com/ChaitanyaReddy05/SpringBootAPi.git"
+     steps{
+
+         script{          
+            withCredentials([gitUsernamePassword(credentialsId: 'GIT', gitToolName: 'git-tool')]) {
+                sh '''
+
+                git checkout master
+                git config --global user.name "Jenkins"
+                git config --global user.email "rchaitureddy@gmail.com"
+                git add .
+                git commit -m "commited from jenkins"
+                git push https://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@github.com/ChaitanyaReddy05/SpringBootAPi.git
+                '''
                 }
-            }
-            }
-        }
-        }
+
+         }
+     }
+ }
+
+        
 }
 }
       
